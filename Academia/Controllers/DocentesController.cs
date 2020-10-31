@@ -10,11 +10,13 @@ using Academia.Models.db;
 
 namespace Academia.Controllers
 {
+    [Authorize]//obliga a iniciar sesion 
     public class DocentesController : Controller
     {
         private AcademiaEntities db = new AcademiaEntities();
 
         // GET: Docentes
+        [AllowAnonymous]//Puede listar sin iniciar sesion
         public ActionResult Index()
         {
             var docente = db.Docente.Include(d => d.Dedicacion).Include(d => d.TipoSangre);
@@ -22,6 +24,7 @@ namespace Academia.Controllers
         }
 
         // GET: Docentes/Details/5
+        [AllowAnonymous]//Puede ver detalles sin iniciar sesion
         public ActionResult Details(int? id)
         {
             if (id == null)
