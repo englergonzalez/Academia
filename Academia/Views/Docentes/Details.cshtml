@@ -1,0 +1,74 @@
+﻿@model Academia.Models.db.Docente
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Docente</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Salario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Salario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.eshombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.eshombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.especialidad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.especialidad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fechanacimiento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fechanacimiento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Dedicacion.descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Dedicacion.descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoSangre.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TipoSangre.nombre)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
