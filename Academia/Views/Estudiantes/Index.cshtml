@@ -22,10 +22,16 @@
                 @Html.DisplayNameFor(model => model.promedionotas)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.celular)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.direccion)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.eshombre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TipoSangre.nombre)
+                G.S RH <!--@Html.DisplayNameFor(model => model.TipoSangre.nombre)-->
             </th>
             <th></th>
         </tr>
@@ -33,28 +39,34 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.fechanacimiento)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.promedionotas)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.eshombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TipoSangre.nombre)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.id })
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fechanacimiento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.promedionotas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.celular)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.direccion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.eshombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoSangre.nombre)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Detalles", "Details", new { id = item.id }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.id })
+            </td>
+        </tr>
         }
     </tbody>
 
@@ -66,4 +78,4 @@
             $('.table').DataTable();
         });
     </script>
-    }
+}

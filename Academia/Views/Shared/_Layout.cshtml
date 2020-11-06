@@ -16,7 +16,7 @@
     <header id="header" class="fixed-top">
         <div class="navbar navbar-expand-lg navbar-light bg-light  navbar-inverse">
             <div class="container">
-                <a class="navbar-brand" href="#">Academia</a>
+                <a class="navbar-brand" href="#"><span style="font-size:15pt">&#9820;</span>Academia</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -41,7 +41,7 @@
                                 <a class="dropdown-item" href=@Url.Action("Index", "Estudiantes")>Listar</a>
                                 <a class="dropdown-item" href="~/Estudiantes/Create">Registrar</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Más</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "Notas")">Notas</a>
                             </div>
                         </li>
                         <!--FIN ESTUDIANTES -->
@@ -54,11 +54,13 @@
                                 <a class="dropdown-item" href=@Url.Action("Index", "Docentes")>Listar</a>
                                 <a class="dropdown-item" href="~/Docentes/Create">Registrar</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Más</a>
+                                <a class="dropdown-item" href="@Url.Action("Create", "Notas")">Notas</a>
                             </div>
                         </li>
                         <!--FIN DOCENTES -->
-
+                        <li class="nav-item">
+                            <a class="nav-link" href=@Url.Action("Index", "Asignaturas")>Asignaturas</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Más</a>
                         </li>
@@ -89,10 +91,42 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Academia LLC</p>
-        </footer>
     </div>
+    <footer>
+        <div class="footer-top">
+            <div class="container">
+                <div class="logo mr-auto">
+                    <h1 class="text-light">
+                        <a class="navbar-brand" href="#">
+                            <img src="" alt="" class="img-fluid">
+                            <span style="font-size:15pt">&#9820;</span>Academia
+                        </a>
+                    </h1>
+                </div>
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-6 footer-newsletter">
+
+                        <h4>Boletín</h4>
+                        <p>Mantente informado de todo lo que sucede.</p>
+                        <form action="" method="" role="form" class="php-email-form">
+                            <input type="email" name="email" placeholder="Correo eletrocnico" data-rule="email" data-msg="Por favor, introduzca un correo electrónico válido">
+                            <input type="submit" value="Subscribirse">
+                            <div class="validate"></div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="copyright">
+                <p>&copy; Copyright @DateTime.Now.Year <strong><span> Academia LLC</span></strong>. Todos los derechos reservados.</p>
+            </div>
+        </div>
+
+    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

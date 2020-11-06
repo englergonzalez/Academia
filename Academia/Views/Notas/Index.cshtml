@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Academia.Models.db.Nota>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.actividad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.descripcion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.porcentaje)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nota1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Asignatura.nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Estudiante.nombre)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.actividad)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.porcentaje)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nota1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Asignatura.nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estudiante.nombre)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+    </script>
+}

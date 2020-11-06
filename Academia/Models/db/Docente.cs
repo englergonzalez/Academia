@@ -11,7 +11,8 @@ namespace Academia.Models.db
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Docente
     {
         public int id { get; set; }
@@ -20,6 +21,7 @@ namespace Academia.Models.db
         public Nullable<bool> eshombre { get; set; }
         public Nullable<int> id_dedicacion { get; set; }
         public string especialidad { get; set; }
+        [DataType(DataType.Date)]
         public Nullable<System.DateTime> fechanacimiento { get; set; }
         public Nullable<int> id_tipoSangre { get; set; }
     

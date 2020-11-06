@@ -10,115 +10,107 @@ using Academia.Models.db;
 
 namespace Academia.Controllers
 {
-    [Authorize]//necesita autorizacion (iniciar sesion)
-    public class EstudiantesController : Controller
+    public class AsignaturasController : Controller
     {
         private AcademiaEntities db = new AcademiaEntities();
 
-        // GET: Estudiantes
-        [AllowAnonymous]//Puede listar sin iniciar sesion
+        // GET: Asignaturas
         public ActionResult Index()
         {
-            var estudiante = db.Estudiante.Include(e => e.TipoSangre);
-            return View(estudiante.ToList());
+            return View(db.Asignatura.ToList());
         }
 
-        // GET: Estudiantes/Details/5
-        [AllowAnonymous]//Puede ver detalles sin iniciar sesion
+        // GET: Asignaturas/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Estudiante estudiante = db.Estudiante.Find(id);
-            if (estudiante == null)
+            Asignatura asignatura = db.Asignatura.Find(id);
+            if (asignatura == null)
             {
                 return HttpNotFound();
             }
-            return View(estudiante);
+            return View(asignatura);
         }
 
-        // GET: Estudiantes/Create
+        // GET: Asignaturas/Create
         public ActionResult Create()
         {
-            ViewBag.id_tipoSangre = new SelectList(db.TipoSangre, "id", "nombre");
             return View();
         }
 
-        // POST: Estudiantes/Create
+        // POST: Asignaturas/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,nombre,fechanacimiento,promedionotas,eshombre,id_tipoSangre,direccion,celular")] Estudiante estudiante)
+        public ActionResult Create([Bind(Include = "id,nombre,creditos")] Asignatura asignatura)
         {
             if (ModelState.IsValid)
             {
-                db.Estudiante.Add(estudiante);
+                db.Asignatura.Add(asignatura);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.id_tipoSangre = new SelectList(db.TipoSangre, "id", "nombre", estudiante.id_tipoSangre);
-            return View(estudiante);
+            return View(asignatura);
         }
 
-        // GET: Estudiantes/Edit/5
+        // GET: Asignaturas/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Estudiante estudiante = db.Estudiante.Find(id);
-            if (estudiante == null)
+            Asignatura asignatura = db.Asignatura.Find(id);
+            if (asignatura == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.id_tipoSangre = new SelectList(db.TipoSangre, "id", "nombre", estudiante.id_tipoSangre);
-            return View(estudiante);
+            return View(asignatura);
         }
 
-        // POST: Estudiantes/Edit/5
+        // POST: Asignaturas/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,nombre,fechanacimiento,promedionotas,eshombre,id_tipoSangre,direccion,celular")] Estudiante estudiante)
+        public ActionResult Edit([Bind(Include = "id,nombre,creditos")] Asignatura asignatura)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(estudiante).State = EntityState.Modified;
+                db.Entry(asignatura).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.id_tipoSangre = new SelectList(db.TipoSangre, "id", "nombre", estudiante.id_tipoSangre);
-            return View(estudiante);
+            return View(asignatura);
         }
 
-        // GET: Estudiantes/Delete/5
+        // GET: Asignaturas/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Estudiante estudiante = db.Estudiante.Find(id);
-            if (estudiante == null)
+            Asignatura asignatura = db.Asignatura.Find(id);
+            if (asignatura == null)
             {
                 return HttpNotFound();
             }
-            return View(estudiante);
+            return View(asignatura);
         }
 
-        // POST: Estudiantes/Delete/5
+        // POST: Asignaturas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Estudiante estudiante = db.Estudiante.Find(id);
-            db.Estudiante.Remove(estudiante);
+            Asignatura asignatura = db.Asignatura.Find(id);
+            db.Asignatura.Remove(asignatura);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

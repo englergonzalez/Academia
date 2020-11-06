@@ -1,0 +1,66 @@
+﻿@model Academia.Models.db.Nota
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Nota</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.actividad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.actividad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.porcentaje)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.porcentaje)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.nota1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nota1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Asignatura.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Asignatura.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estudiante.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estudiante.nombre)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

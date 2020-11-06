@@ -29,5 +29,7 @@ namespace Academia.Models.db
         public virtual DbSet<Docente> Docente { get; set; }
         public virtual DbSet<Estudiante> Estudiante { get; set; }
         public virtual DbSet<TipoSangre> TipoSangre { get; set; }
+        public virtual DbSet<Asignatura> Asignatura { get; set; }
+        public virtual DbSet<Nota> Nota { get; set; }
     }
 }

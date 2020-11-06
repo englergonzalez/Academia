@@ -172,14 +172,19 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AsignaturasController.cs" />
     <Compile Include="Controllers\DocentesController.cs" />
     <Compile Include="Controllers\EstudiantesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NotasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\db\Asignatura.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\db\Dedicacion.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -203,6 +208,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\db\Nota.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\db\TipoSangre.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -634,6 +642,16 @@
     <Content Include="Views\Estudiantes\Details.cshtml" />
     <Content Include="Views\Estudiantes\Edit.cshtml" />
     <Content Include="Views\Estudiantes\Index.cshtml" />
+    <Content Include="Views\Asignaturas\Create.cshtml" />
+    <Content Include="Views\Asignaturas\Delete.cshtml" />
+    <Content Include="Views\Asignaturas\Details.cshtml" />
+    <Content Include="Views\Asignaturas\Edit.cshtml" />
+    <Content Include="Views\Asignaturas\Index.cshtml" />
+    <Content Include="Views\Notas\Create.cshtml" />
+    <Content Include="Views\Notas\Delete.cshtml" />
+    <Content Include="Views\Notas\Details.cshtml" />
+    <Content Include="Views\Notas\Edit.cshtml" />
+    <Content Include="Views\Notas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

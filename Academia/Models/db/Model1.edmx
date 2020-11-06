@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="AcademiaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Asignatura">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="creditos" Type="int" />
+        </EntityType>
         <EntityType Name="Dedicacion">
           <Key>
             <PropertyRef Name="id" />
@@ -36,6 +44,20 @@
           <Property Name="promedionotas" Type="float" />
           <Property Name="eshombre" Type="bit" />
           <Property Name="id_tipoSangre" Type="int" />
+          <Property Name="direccion" Type="nvarchar" MaxLength="50" />
+          <Property Name="celular" Type="nvarchar" MaxLength="12" />
+        </EntityType>
+        <EntityType Name="Nota">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_Asignatura" Type="int" />
+          <Property Name="id_Estudiante" Type="int" />
+          <Property Name="actividad" Type="nvarchar" MaxLength="50" />
+          <Property Name="descripcion" Type="nvarchar" MaxLength="50" />
+          <Property Name="porcentaje" Type="float" />
+          <Property Name="nota" Type="float" />
         </EntityType>
         <EntityType Name="TipoSangre">
           <Key>
@@ -80,10 +102,36 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Nota_Asignatura">
+          <End Role="Asignatura" Type="Self.Asignatura" Multiplicity="0..1" />
+          <End Role="Nota" Type="Self.Nota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Asignatura">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Nota">
+              <PropertyRef Name="id_Asignatura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nota_Estudiante">
+          <End Role="Estudiante" Type="Self.Estudiante" Multiplicity="0..1" />
+          <End Role="Nota" Type="Self.Nota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estudiante">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Nota">
+              <PropertyRef Name="id_Estudiante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="AcademiaModelStoreContainer">
+          <EntitySet Name="Asignatura" EntityType="Self.Asignatura" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dedicacion" EntityType="Self.Dedicacion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Docente" EntityType="Self.Docente" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Estudiante" EntityType="Self.Estudiante" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Nota" EntityType="Self.Nota" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TipoSangre" EntityType="Self.TipoSangre" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Docente_Dedicacion" Association="Self.FK_Docente_Dedicacion">
             <End Role="Dedicacion" EntitySet="Dedicacion" />
@@ -96,6 +144,14 @@
           <AssociationSet Name="FK_Estudiante_TipoSangre" Association="Self.FK_Estudiante_TipoSangre">
             <End Role="TipoSangre" EntitySet="TipoSangre" />
             <End Role="Estudiante" EntitySet="Estudiante" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nota_Asignatura" Association="Self.FK_Nota_Asignatura">
+            <End Role="Asignatura" EntitySet="Asignatura" />
+            <End Role="Nota" EntitySet="Nota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nota_Estudiante" Association="Self.FK_Nota_Estudiante">
+            <End Role="Estudiante" EntitySet="Estudiante" />
+            <End Role="Nota" EntitySet="Nota" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -137,6 +193,9 @@
           <Property Name="eshombre" Type="Boolean" />
           <Property Name="id_tipoSangre" Type="Int32" />
           <NavigationProperty Name="TipoSangre" Relationship="Self.FK_Estudiante_TipoSangre" FromRole="Estudiante" ToRole="TipoSangre" />
+          <Property Name="direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="celular" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Nota" Relationship="AcademiaModel.FK_Nota_Estudiante" FromRole="Estudiante" ToRole="Nota" />
         </EntityType>
         <EntityType Name="TipoSangre">
           <Key>
@@ -200,7 +259,64 @@
             <End Role="TipoSangre" EntitySet="TipoSangre" />
             <End Role="Estudiante" EntitySet="Estudiante" />
           </AssociationSet>
+          <EntitySet Name="Asignatura" EntityType="AcademiaModel.Asignatura" />
+          <EntitySet Name="Nota" EntityType="AcademiaModel.Nota" />
+          <AssociationSet Name="FK_Nota_Asignatura" Association="AcademiaModel.FK_Nota_Asignatura">
+            <End Role="Asignatura" EntitySet="Asignatura" />
+            <End Role="Nota" EntitySet="Nota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nota_Estudiante" Association="AcademiaModel.FK_Nota_Estudiante">
+            <End Role="Estudiante" EntitySet="Estudiante" />
+            <End Role="Nota" EntitySet="Nota" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Asignatura">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="creditos" Type="Int32" />
+          <NavigationProperty Name="Nota" Relationship="AcademiaModel.FK_Nota_Asignatura" FromRole="Asignatura" ToRole="Nota" />
+        </EntityType>
+        <EntityType Name="Nota">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_Asignatura" Type="Int32" />
+          <Property Name="id_Estudiante" Type="Int32" />
+          <Property Name="actividad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="porcentaje" Type="Double" />
+          <Property Name="nota1" Type="Double" />
+          <NavigationProperty Name="Asignatura" Relationship="AcademiaModel.FK_Nota_Asignatura" FromRole="Nota" ToRole="Asignatura" />
+          <NavigationProperty Name="Estudiante" Relationship="AcademiaModel.FK_Nota_Estudiante" FromRole="Nota" ToRole="Estudiante" />
+        </EntityType>
+        <Association Name="FK_Nota_Asignatura">
+          <End Type="AcademiaModel.Asignatura" Role="Asignatura" Multiplicity="0..1" />
+          <End Type="AcademiaModel.Nota" Role="Nota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Asignatura">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Nota">
+              <PropertyRef Name="id_Asignatura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nota_Estudiante">
+          <End Type="AcademiaModel.Estudiante" Role="Estudiante" Multiplicity="0..1" />
+          <End Type="AcademiaModel.Nota" Role="Nota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estudiante">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Nota">
+              <PropertyRef Name="id_Estudiante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -233,6 +349,8 @@
           <EntitySetMapping Name="Estudiante">
             <EntityTypeMapping TypeName="AcademiaModel.Estudiante">
               <MappingFragment StoreEntitySet="Estudiante">
+                <ScalarProperty Name="celular" ColumnName="celular" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="fechanacimiento" ColumnName="fechanacimiento" />
@@ -247,6 +365,28 @@
               <MappingFragment StoreEntitySet="TipoSangre">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Asignatura">
+            <EntityTypeMapping TypeName="AcademiaModel.Asignatura">
+              <MappingFragment StoreEntitySet="Asignatura">
+                <ScalarProperty Name="creditos" ColumnName="creditos" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nota">
+            <EntityTypeMapping TypeName="AcademiaModel.Nota">
+              <MappingFragment StoreEntitySet="Nota">
+                <ScalarProperty Name="nota1" ColumnName="nota" />
+                <ScalarProperty Name="porcentaje" ColumnName="porcentaje" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="actividad" ColumnName="actividad" />
+                <ScalarProperty Name="id_Estudiante" ColumnName="id_Estudiante" />
+                <ScalarProperty Name="id_Asignatura" ColumnName="id_Asignatura" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

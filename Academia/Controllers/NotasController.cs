@@ -10,115 +10,116 @@ using Academia.Models.db;
 
 namespace Academia.Controllers
 {
-    [Authorize]//necesita autorizacion (iniciar sesion)
-    public class EstudiantesController : Controller
+    public class NotasController : Controller
     {
         private AcademiaEntities db = new AcademiaEntities();
 
-        // GET: Estudiantes
-        [AllowAnonymous]//Puede listar sin iniciar sesion
+        // GET: Notas
         public ActionResult Index()
         {
-            var estudiante = db.Estudiante.Include(e => e.TipoSangre);
-            return View(estudiante.ToList());
+            var nota = db.Nota.Include(n => n.Asignatura).Include(n => n.Estudiante);
+            return View(nota.ToList());
         }
 
-        // GET: Estudiantes/Details/5
-        [AllowAnonymous]//Puede ver detalles sin iniciar sesion
+        // GET: Notas/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Estudiante estudiante = db.Estudiante.Find(id);
-            if (estudiante == null)
+            Nota nota = db.Nota.Find(id);
+            if (nota == null)
             {
                 return HttpNotFound();
             }
-            return View(estudiante);
+            return View(nota);
         }
 
-        // GET: Estudiantes/Create
+        // GET: Notas/Create
         public ActionResult Create()
         {
-            ViewBag.id_tipoSangre = new SelectList(db.TipoSangre, "id", "nombre");
+            ViewBag.id_Asignatura = new SelectList(db.Asignatura, "id", "nombre");
+            ViewBag.id_Estudiante = new SelectList(db.Estudiante, "id", "nombre");
             return View();
         }
 
-        // POST: Estudiantes/Create
+        // POST: Notas/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,nombre,fechanacimiento,promedionotas,eshombre,id_tipoSangre,direccion,celular")] Estudiante estudiante)
+        public ActionResult Create([Bind(Include = "id,id_Asignatura,id_Estudiante,actividad,descripcion,porcentaje,nota1")] Nota nota)
         {
             if (ModelState.IsValid)
             {
-                db.Estudiante.Add(estudiante);
+                db.Nota.Add(nota);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.id_tipoSangre = new SelectList(db.TipoSangre, "id", "nombre", estudiante.id_tipoSangre);
-            return View(estudiante);
+            ViewBag.id_Asignatura = new SelectList(db.Asignatura, "id", "nombre", nota.id_Asignatura);
+            ViewBag.id_Estudiante = new SelectList(db.Estudiante, "id", "nombre", nota.id_Estudiante);
+            return View(nota);
         }
 
-        // GET: Estudiantes/Edit/5
+        // GET: Notas/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Estudiante estudiante = db.Estudiante.Find(id);
-            if (estudiante == null)
+            Nota nota = db.Nota.Find(id);
+            if (nota == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.id_tipoSangre = new SelectList(db.TipoSangre, "id", "nombre", estudiante.id_tipoSangre);
-            return View(estudiante);
+            ViewBag.id_Asignatura = new SelectList(db.Asignatura, "id", "nombre", nota.id_Asignatura);
+            ViewBag.id_Estudiante = new SelectList(db.Estudiante, "id", "nombre", nota.id_Estudiante);
+            return View(nota);
         }
 
-        // POST: Estudiantes/Edit/5
+        // POST: Notas/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,nombre,fechanacimiento,promedionotas,eshombre,id_tipoSangre,direccion,celular")] Estudiante estudiante)
+        public ActionResult Edit([Bind(Include = "id,id_Asignatura,id_Estudiante,actividad,descripcion,porcentaje,nota1")] Nota nota)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(estudiante).State = EntityState.Modified;
+                db.Entry(nota).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.id_tipoSangre = new SelectList(db.TipoSangre, "id", "nombre", estudiante.id_tipoSangre);
-            return View(estudiante);
+            ViewBag.id_Asignatura = new SelectList(db.Asignatura, "id", "nombre", nota.id_Asignatura);
+            ViewBag.id_Estudiante = new SelectList(db.Estudiante, "id", "nombre", nota.id_Estudiante);
+            return View(nota);
         }
 
-        // GET: Estudiantes/Delete/5
+        // GET: Notas/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Estudiante estudiante = db.Estudiante.Find(id);
-            if (estudiante == null)
+            Nota nota = db.Nota.Find(id);
+            if (nota == null)
             {
                 return HttpNotFound();
             }
-            return View(estudiante);
+            return View(nota);
         }
 
-        // POST: Estudiantes/Delete/5
+        // POST: Notas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Estudiante estudiante = db.Estudiante.Find(id);
-            db.Estudiante.Remove(estudiante);
+            Nota nota = db.Nota.Find(id);
+            db.Nota.Remove(nota);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
