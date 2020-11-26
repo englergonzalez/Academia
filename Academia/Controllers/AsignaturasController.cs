@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Academia.Models;
 using Academia.Models.db;
 
 namespace Academia.Controllers
@@ -115,6 +116,28 @@ namespace Academia.Controllers
             return RedirectToAction("Index");
         }
 
+        public JsonResult AsignaturasAcademia()
+        {
+            var q = db.Nota.GroupBy(m => new { m.Estudiante, m.Asignatura });
+
+            List<AsignaturasEstudiante> asignaturas = new List<AsignaturasEstudiante>();
+
+            List<String> asig = new List<string>();
+
+            AsignaturasEstudiante asignaturasEstudiante = new AsignaturasEstudiante();
+
+            foreach (var itemA in q)
+            {
+                String nombreAsignatura = itemA.Key.Asignatura.nombre;
+                if (!asig.Contains(nombreAsignatura))
+                {
+                    asignaturasEstudiante = new AsignaturasEstudiante() { data = nombreAsignatura };
+                    asig.Add(nombreAsignatura);
+                }
+            }
+
+            return Json(asig, JsonRequestBehavior.AllowGet);
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -4,10 +4,10 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2><br />Asignaturas</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
+<p><br />
+    @Html.ActionLink("  ", "Create", null, new { @class = "btn btn-primary fa fa-plus", @style = "font-size:x-large" })
 </p>
 <table class="table">
     <thead>
@@ -32,9 +32,9 @@
                     @Html.DisplayFor(modelItem => item.creditos)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                    @Html.ActionLink(" ", "Edit", new { id = item.id }, new { @class = "btn btn-light far fa-edit" })
+                    @Html.ActionLink(" ", "Details", new { id = item.id }, new { @class = "btn btn-light far fa-eye" })
+                    @Html.ActionLink(" ", "Delete", new { id = item.id }, new { @class = "btn btn-light far fa-trash-alt" })
                 </td>
             </tr>
         }

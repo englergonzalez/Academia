@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Academia.Models;
 using Academia.Models.db;
 
 namespace Academia.Controllers
@@ -122,6 +123,68 @@ namespace Academia.Controllers
             db.Nota.Remove(nota);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public JsonResult NotasAcademia()
+        {
+            var q = db.Nota.GroupBy(m => new { m.Estudiante, m.Asignatura });
+            var p = db.Asignatura.OrderBy(m => new { m.id });
+
+            List<NotasEstudiante> estudiantes = new List<NotasEstudiante>();
+
+            List<String> est = new List<string>();
+            List<String> asig = new List<string>();
+
+            NotasEstudiante notasEstudiante = new NotasEstudiante();
+
+            foreach (var item in q)
+            { 
+                if (!asig.Contains(item.Key.Asignatura.nombre))
+                {
+                    asig.Add(item.Key.Asignatura.nombre);
+                }
+            }
+            foreach (var item in q)
+            {
+                String nombreEstudiante = item.Key.Estudiante.nombre;
+                String nombreAsignatura = item.Key.Asignatura.nombre;
+                double notaCero = 0;
+
+                for (int i = 0; i < asig.Count; i++)
+                {
+                    
+                    if ( asig.ElementAt(i).Equals(nombreAsignatura) && !est.Contains(nombreEstudiante) )
+                    {
+                        notasEstudiante = new NotasEstudiante() { name = nombreEstudiante, data = new List<double>() };
+
+                        notasEstudiante.data.Add(item.Average(m => m.nota1).Value);
+                        est.Add(nombreEstudiante);
+                        estudiantes.Add(notasEstudiante);
+                    }
+                    else if (!asig.ElementAt(i).Equals(nombreAsignatura) && !est.Contains(nombreEstudiante))
+                    {
+                        notasEstudiante = new NotasEstudiante() { name = nombreEstudiante, data = new List<double>() };
+                        notasEstudiante.data.Add(notaCero);
+
+                        est.Add(nombreEstudiante);
+                        estudiantes.Add(notasEstudiante);
+                    }
+                    else if( asig.ElementAt(i).Equals(nombreAsignatura) && est.Contains(nombreEstudiante) )
+                    {
+                        notasEstudiante.data.Add(item.Average(m => m.nota1).Value);
+                        try
+                        {
+                            notasEstudiante.data.RemoveAll(x => x == 0);
+                        }
+                        catch { }
+                    }
+                    else if( !asig.ElementAt(i).Equals(nombreAsignatura) && est.Contains(nombreEstudiante) )
+                    {
+                        notasEstudiante.data.Add(notaCero);
+                    }
+                }
+            }
+            return Json(estudiantes, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

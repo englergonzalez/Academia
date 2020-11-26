@@ -38,6 +38,20 @@ namespace Academia.Controllers
             }
             return View(estudiante);
         }
+        // GET: Estudiantes/Details2?name=engler&eshombre=true
+        [AllowAnonymous]
+        public ActionResult Details2(string name, bool? eshombre)
+        {
+            if ((name == null && name == "") || eshombre == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Estudiante estudiante = db.Estudiante.Where(e => e.eshombre == eshombre || e.nombre == name).FirstOrDefault();
+
+            return View("Details", estudiante);
+
+
+        }
 
         // GET: Estudiantes/Create
         public ActionResult Create()

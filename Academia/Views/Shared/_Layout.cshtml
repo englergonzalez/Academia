@@ -11,6 +11,10 @@
     <!--CSS-->
     <link href="~/Content/DataTables/css/jquery.dataTables.css" rel="stylesheet" />
     <link href="~/Content/DataTables/css/dataTables.bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/fontawesome-all.css" rel="stylesheet" />
+
+    @RenderSection("styles", required: false)
+
 </head>
 <body>
     <header id="header" class="fixed-top">
@@ -109,7 +113,7 @@
 
                         <h4>Boletín</h4>
                         <p>Mantente informado de todo lo que sucede.</p>
-                        <form action="" method="" role="form" class="php-email-form">
+                        <form action=""  role="form" class="php-email-form">
                             <input type="email" name="email" placeholder="Correo eletrocnico" data-rule="email" data-msg="Por favor, introduzca un correo electrónico válido">
                             <input type="submit" value="Subscribirse">
                             <div class="validate"></div>
@@ -134,10 +138,14 @@
     <!--JS-->
     <script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
     <script src="~/Scripts/DataTables/dataTables.bootstrap.js"></script>
+    <script src="~/Scripts/Highcharts-8.2.2/highcharts.js"></script>
+    <script src="~/Scripts/Highcharts-8.2.2/modules/exporting.js"></script>
+    <script src="~/Scripts/Highcharts-8.2.2/modules/export-data.js"></script>
+    <script src="~/Scripts/Highcharts-8.2.2/modules/accessibility.js"></script>
 
     @RenderSection("scripts", required: false)
     <script type="text/javascript">
-        $.validator.methods.number = function (value, element) {
+       /* $.validator.methods.number = function (value, element) {
             value = floatValue(value);
             return this.optional(element) || !isNaN(value);
         }
@@ -148,7 +156,8 @@
 
         function floatValue(value) {
             return parseFloat(value.replace(",", "."));
-        }
+        }*/
+        
     </script>
 </body>
 </html>

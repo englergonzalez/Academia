@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Academia.Models.db.Docente>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Docentes";
 }
 
-<h2>Index</h2>
+<h2><br />Docentes</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
+<p><br />
+    @Html.ActionLink("  ", "Create", null, new { @class = "btn btn-primary fa fa-user-plus", @style = "font-size:x-large" })
 </p>
 <table class="table">
 
@@ -63,10 +63,8 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.TipoSangre.nombre)
                 </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                <td>@Html.ActionLink(" ", "Edit", new { id = item.id }, new { @class = "btn btn-light far fa-edit" })@Html.ActionLink(" ", "Details", new { id = item.id }, new { @class = "btn btn-light far fa-eye" })
+                    @Html.ActionLink(" ", "Delete", new { id = item.id }, new { @class = "btn btn-light far fa-trash-alt" })
                 </td>
             </tr>
         }
