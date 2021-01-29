@@ -1,13 +1,17 @@
 ﻿@model IEnumerable<Academia.Models.db.Estudiante>
 
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Lista de Estudiantes";
 }
 
 <h2><br />Estudiantes</h2>
 
-<p><br />
-    @Html.ActionLink("  ", "Create", null, new { @class = "btn btn-primary fa fa-user-plus", @style ="font-size:x-large" })
+<p>
+    <br />
+    <!--@Html.ActionLink(" ", "create", null, new { @class = "btn btn-primary fa fa-user-plus", @style = "font-size:x-large" })-->
+    <button class="btn btn-primary fa fa-user-plus" style="font-size:x-large" id="btn_crear"></button>
+
 </p>
 <table class="table">
     <thead>
@@ -39,44 +43,528 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.fechanacimiento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.promedionotas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.celular)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.direccion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.eshombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TipoSangre.nombre)
-            </td>
-            <td>
-                @Html.ActionLink(" ", "Edit", new { id = item.id }, new { @class = "btn btn-light far fa-edit" })
-                @Html.ActionLink(" ", "Details", new { id = item.id }, new { @class = "btn btn-light far fa-eye" })
-                @Html.ActionLink(" ", "Delete", new { id = item.id }, new { @class = "btn btn-light far fa-trash-alt" })
-                <a class=""></a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.fechanacimiento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.promedionotas)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.celular)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.direccion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.eshombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoSangre.nombre)
+                </td>
+                <td>
+                    <!--@Html.ActionLink(" ", "Edit", new { id = item.id }, new { @class = "btn btn-light far fa-edit" })
+                    @Html.ActionLink(" ", "Details", new { id = item.id }, new { @class = "btn btn-light far fa-eye" })
+                    @Html.ActionLink(" ", "Delete", new { id = item.id }, new { @class = "btn btn-light far fa-trash-alt" })-->
+                    <a class="btn btn-light far fa-edit" data-toggle="modal" data-target="#frEditar"
+                       onclick="edit(@item.id, '@item.nombre', '@item.fechanacimiento', '@item.promedionotas',
+                        '@item.celular', '@item.direccion', '@item.eshombre', '@item.id_tipoSangre')">
+                    </a>
+                    <a class="btn btn-light far fa-eye" data-toggle="modal" data-target="#frDetalle"
+                       onclick="detail(@item.id, '@item.nombre', '@item.fechanacimiento', '@item.promedionotas',
+                        '@item.celular', '@item.direccion', '@item.eshombre', '@item.TipoSangre.nombre')">
+                    </a>
+                    <a class="btn btn-light far fa-trash-alt" data-toggle="modal" data-target="#frEliminar"
+                       onclick="delet(@item.id, '@item.nombre', '@item.fechanacimiento', '@item.promedionotas',
+                        '@item.celular', '@item.direccion','@item.eshombre', '@item.TipoSangre.nombre')">
+                    </a>
+                </td>
+            </tr>
         }
     </tbody>
-
 </table>
+<!-- Modal Crear-->
+<div class="modal fade" id="frCrear" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLabel">Estudiante</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="@Url.Action("CreateAjax")" method="post" novalidate="novalidate" id="frm_Crear">
+                    <div class="form-horizontal">
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-6" for="nombre">Nombre</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" id="nombre" name="nombre" type="text" value="">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="nombre" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-6" for="fechanacimiento">Fecha de nacimiento</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" data-val="true" data-val-date="El campo fechanacimiento debe ser una fecha." id="fechanacimiento" name="fechanacimiento" type="date" value="">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="fechanacimiento" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-6" for="promedionotas">Promedio de notas</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" data-val="true" data-val-number="El campo promedio notas debe ser un número." id="promedionotas" name="promedionotas" type="text" value="">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="promedionotas" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-6" for="celular">Celular</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" data-val="true" data-val-number="Debe ser un número."id="celular" name="celular" type="text" value="">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="celular" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-6" for="direccion">Dirección</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" id="direccion" name="direccion" type="text" value="">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="direccion" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-6" for="eshombre">¿Es hombre?</label>
+                            <div class="col-md-10">
+                                <div class="checkbox">
+                                    <select class="list-box tri-state" id="eshombre" name="eshombre">
+                                        <option selected="selected" value="">Sin establecer</option>
+                                        <option value="true">Verdadero</option>
+                                        <option value="false">False</option>
+                                    </select>
+                                    <span class="field-validation-valid text-danger" data-valmsg-for="eshombre" data-valmsg-replace="true"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-6" for="id_tipoSangre">Tipo de sangre</label>
+                            <div class="col-md-10">
+                                <select class="form-control" id="id_tipoSangre" name="id_tipoSangre">
+                                    <option value="1">A+</option>
+                                    <option value="2">A-</option>
+                                    <option value="3">AB+</option>
+                                    <option value="4">AB-</option>
+                                    <option value="5">B+</option>
+                                    <option value="6">B-</option>
+                                    <option value="7">O+</option>
+                                    <option value="8">O-</option>
+                                </select>
+                                <span class="field-validation-valid text-danger" data-valmsg-for="id_tipoSangre" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn_guardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar-->
+ <div class="modal fade" id="frEditar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLabel">Estudiante</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="@Url.Action("EditAjax")" method="post" novalidate="novalidate" id="frm_Editar">
+
+                    <div class="form-horizontal">
+                        <input data-val="true" data-val-number="El campo id debe ser un número." data-val-required="El campo id es obligatorio." id="id" name="id" type="hidden" value="">
+
+                        <div class="form-group">
+                            <label class="control-label col-md-6" for="nombre">Nombre</label>
+                            <div class="col-md-12">
+                                <input class="form-control text-box single-line valid" id="nombree" name="nombre" type="text" value="" aria-invalid="false">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="nombre" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-6" for="fechanacimiento">Fecha de nacimiento</label>
+                            <div class="col-md-12">
+                                <input class="form-control text-box single-line" data-val="true" data-val-date="El campo fechanacimiento debe ser una fecha." id="fechanacimientoo" name="fechanacimiento" type="date" value="">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="fechanacimiento" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-6" for="promedionotas">Promedio de notas</label>
+                            <div class="col-md-12">
+                                <input class="form-control text-box single-line valid" data-val="true" data-val-number="El campo promedionotas debe ser un número." id="promedionotass" name="promedionotas" type="text" value="" aria-describedby="promedionotas-error" aria-invalid="false">
+                                <span class="text-danger field-validation-valid" data-valmsg-for="promedionotas" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-6" for="celular">Celular</label>
+                            <div class="col-md-12">
+                                <input class="form-control text-box single-line" id="celularr" name="celular" type="text" value="">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="celular" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-6" for="direccion">Dirección</label>
+                            <div class="col-md-12">
+                                <input class="form-control text-box single-line" id="direccionn" name="direccion" type="text" value="">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="direccion" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-6" for="eshombre">¿Es hombre?</label>
+                            <div class="col-md-12">
+                                <div class="checkbox">
+                                    <select class="list-box tri-state" id="eshombree" name="eshombre">
+                                        <option value="">Sin establecer</option>
+                                        <option value="true">Verdadero</option>
+                                        <option value="false">False</option>
+                                    </select>
+                                    <span class="field-validation-valid text-danger" data-valmsg-for="eshombre" data-valmsg-replace="true"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-6" for="id_tipoSangre">Tipo de Sangre</label>
+                            <div class="col-md-12">
+                                <select class="form-control" id="id_tipoSangree" name="id_tipoSangre">
+                                    <option value="1">A+</option>
+                                    <option value="2">A-</option>
+                                    <option value="3">AB+</option>
+                                    <option value="4">AB-</option>
+                                    <option value="5">B+</option>
+                                    <option value="6">B-</option>
+                                    <option value="7">O+</option>
+                                    <option value="8">O-</option>
+                                </select>
+                                <span class="field-validation-valid text-danger" data-valmsg-for="id_tipoSangre" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <div class="">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>                           
+                                <button type="button" class="btn btn-primary" id="btn_edit">Actualizar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Model Detalle-->
+<div class="modal fade" id="frDetalle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLabel">Estudiante</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <dl class="dl-horizontal">
+                    <dt> Nombre</dt>
+                    <dd id="name"></dd>
+
+                    <dt>Fecha Nacimiento</dt>
+                    <dd id="date"></dd>
+
+                    <dt> Promedio de notas </dt>
+                    <dd id="promedio"></dd>
+
+                    <dt>Celular</dt>
+                    <dd id="cel"></dd>
+
+                    <dt> Dirección</dt>
+                    <dd id="dir"></dd>
+
+                    <dt>¿Es hombre?</dt>
+                    <dd>
+                        <select id="hombre" class="tri-state list-box" disabled="disabled">
+                            <option value="">Sin establecer</option>
+                            <option value="true">Verdadero</option>
+                            <option value="false">False</option>
+                        </select>
+                    </dd>
+
+                    <dt>Tipo de sangre</dt>
+                    <dd id="tipoSangre"></dd>
+                </dl>
+                <form action="">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>  
+
+<!-- Model Eliminar-->
+<div class="modal fade" id="frEliminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLabel">Estudiante</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container body-content">
+                    <h4>¿Estás seguro de que quieres eliminar esto?</h4>
+                    <div>
+                        <dl class="dl-horizontal">
+                            <dt> Nombre</dt>
+                            <dd id="namee"></dd>
+
+                            <dt>Fecha Nacimiento</dt>
+                            <dd id="datee"></dd>
+
+                            <dt> Promedio de notas </dt>
+                            <dd id="promedioo"></dd>
+
+                            <dt>Celular</dt>
+                            <dd id="cell"></dd>
+
+                            <dt> Dirección</dt>
+                            <dd id="dirr"></dd>
+
+                            <dt>¿Es hombre?</dt>
+                            <dd>
+                                <select id="hombree" class="tri-state list-box" disabled="disabled">
+                                    <option value="">Sin establecer</option>
+                                    <option value="true">Verdadero</option>
+                                    <option value="false">False</option>
+                                </select>
+                            </dd>
+
+                            <dt>Tipo de sangre</dt>
+                            <dd id="tipoSangree"></dd>
+                        </dl>
+                        <form action="@Url.Action("DeleteAjax")" method="post" novalidate="novalidate" id="frm_Eliminar">
+                            <input name="__RequestVerificationToken" type="hidden" value="1_vDPzpikpBkDJAnNK7RIHCTg-yKaXddsZAOH0N_OuEIS8DdDJHwIik_ZLbQGxtUmOdDAbtCl8j_Q-DNQc3CSoLvv0fmtfOvihwEvsdBcqg_5H9mmhFCP-XUXjXJ8XtWDdAlTmZ65ZrRSORJ8CBOmg2">
+                            <input id="idd" name="id" type="hidden" value="">
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary" id="btn">Eliminar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section scripts{
     <script>
         $(document).ready(function () {
-            $('.table').DataTable();
+            //Modal Crear => guarda un nuevo registro
+            $("#btn_guardar").click(function (ev) {
+
+                $.ajax(
+                    {
+                        type: $("#frm_Crear").attr("method"),
+                        url: $("#frm_Crear").attr("action"),
+                        data: $("#frm_Crear").serialize(),
+                        success: function (data) {
+                            //alert(JSON.stringify(data));
+                            $('#frCrear').modal('hide');//Oculta el modal
+                            location.reload();
+                        }
+                    }
+                );
+                ev.preventDefault();
+            });
+            //Modal Crear => Muestra el modal
+            $("#btn_crear").click(function () {
+                $('#frCrear').modal('show');
+            });
+
+            //Modal Editar => recibe los datos para mostrarlos en pantalla
+            edit = function (id, nom, fec, pro, cel, dir, esh, tip) {
+
+                let date = new Date(fec);
+
+                let day = date.getDate()
+                let month = date.getMonth() + 1
+                let year = date.getFullYear()
+
+                let fecha
+                //obtener el formato correcto
+                if (month < 10) {
+                    fecha = `${year}-0${month}-${day}`;
+                } else if (day < 10) {
+                    fecha = `${year}-${month}-0${day}`;
+                } else {
+                    fecha = `${year}-${month}-${day}`;
+                }
+
+                $('#id').val(id);
+                $('#nombree').val(nom);
+                $('#fechanacimientoo').val(fecha);
+                $('#promedionotass').val(pro);
+                $('#celularr').val(cel);
+                $('#direccionn').val(dir);
+
+                if (esh === "onclick") {
+                    $('#eshombree').val('true');
+                } else if (esh === "") {
+                    $('#eshombree').val('false');
+                } else {
+                    $('#eshombree').val('');
+                }
+
+                $('#id_tipoSangree').val(tip);
+            };
+            $("#btn_edit").click(function (ev) {
+                var id = document.getElementById("id").value;
+                $.ajax(
+                    {
+                        type: $("#frm_Editar").attr("method"),
+                        url: $("#frm_Editar").attr("action"),
+                        data: $("#frm_Editar").serialize(),
+                        success: function (data) {
+                            //alert(JSON.stringify(data));
+                            $('#frEditar').modal('hide');//Oculta el modal
+                            location.reload();
+                        }
+                    }
+                );
+                ev.preventDefault();
+            });
+
+            //Modal Detalle => recibe los datos para mostrarlos en pantalla
+            detail = function (id, nom, fec, pro, cel, dir, esh, tip) {
+
+                let date = new Date(fec);
+
+                let day = date.getDate()
+                let month = date.getMonth() + 1
+                let year = date.getFullYear()
+
+                let fecha
+                //obtener el formato correcto
+                if (month < 10) {
+                    fecha = `${year}-0${month}-${day}`;
+                } else if (day < 10) {
+                    fecha = `${year}-${month}-0${day}`;
+                } else {
+                    fecha = `${year}-${month}-${day}`;
+                }
+
+                $('#id').val(id);
+                $('#name').html(nom);
+                $('#date').html(fecha);
+                $('#promedio').html(pro);
+                $('#cel').html(cel);
+                $('#dir').html(dir);
+
+                if (esh === "onclick") {
+                    $('#hombre').val('true');
+                } else if (esh === "") {
+                    $('#hombre').val('false');
+                } else {
+                    $('#hombre').val('');
+                }
+
+                $('#tipoSangre').html(tip);
+            };
+
+            //Modal Eliminar => recibe los datos para mostrarlos en pantalla
+            delet = function (id, nom, fec, pro, cel, dir, esh, tip) {
+
+                let date = new Date(fec);
+
+                let day = date.getDate()
+                let month = date.getMonth() + 1
+                let year = date.getFullYear()
+
+                let fecha
+                //obtener el formato correcto
+                if (month < 10) {
+                    fecha = `${year}-0${month}-${day}`;
+                } else if (day < 10) {
+                    fecha = `${year}-${month}-0${day}`;
+                } else {
+                    fecha = `${year}-${month}-${day}`;
+                }
+
+                $('#idd').val(id);
+                $('#namee').html(nom);
+                $('#datee').html(fecha);
+                $('#promedioo').html(pro);
+                $('#cell').html(cel);
+                $('#dirr').html(dir);
+
+                if (esh === "onclick") {
+                    $('#hombree').val('true');
+                } else if (esh === "") {
+                    $('#hombree').val('false');
+                } else {
+                    $('#hombree').val('');
+                }
+
+                $('#tipoSangree').html(tip);
+            };
+            $("#btn").click(function (ev) {
+                
+                var id = document.getElementById("idd").value;
+
+                $.ajax(
+                    {
+                        type: $("#frm_Eliminar").attr("method"),
+                        url: $("#frm_Eliminar").attr("action"),
+                        data: { id: id },
+                        success: function (data) {
+                            //alert(JSON.stringify(data));
+                            $('#frEliminar').modal('hide');//Oculta el modal
+                            location.reload();
+                        }
+                    }
+                );
+                ev.preventDefault();
+            });
+
+            //Tabla
+            table = $('.table').DataTable();
         });
     </script>
 }

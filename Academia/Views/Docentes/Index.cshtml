@@ -63,7 +63,8 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.TipoSangre.nombre)
                 </td>
-                <td>@Html.ActionLink(" ", "Edit", new { id = item.id }, new { @class = "btn btn-light far fa-edit" })@Html.ActionLink(" ", "Details", new { id = item.id }, new { @class = "btn btn-light far fa-eye" })
+                <td>@Html.ActionLink(" ", "Edit", new { id = item.id }, new { @class = "btn btn-light far fa-edit" })
+                    @Html.ActionLink(" ", "Details", new { id = item.id }, new { @class = "btn btn-light far fa-eye" })
                     @Html.ActionLink(" ", "Delete", new { id = item.id }, new { @class = "btn btn-light far fa-trash-alt" })
                 </td>
             </tr>

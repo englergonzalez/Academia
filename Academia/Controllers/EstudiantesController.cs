@@ -54,10 +54,17 @@ namespace Academia.Controllers
         }
 
         // GET: Estudiantes/Create
-        public ActionResult Create()
+        public void Create()
         {
-            ViewBag.id_tipoSangre = new SelectList(db.TipoSangre, "id", "nombre");
-            return View();
+            //ViewBag.id_tipoSangre = new SelectList(db.TipoSangre, "id", "nombre");
+            //return View();
+
+        }
+        public JsonResult CreateAjax(Estudiante estudiante)
+        {
+            db.Estudiante.Add(estudiante);
+            db.SaveChanges();
+            return Json(estudiante, JsonRequestBehavior.AllowGet);
         }
 
         // POST: Estudiantes/Create
@@ -92,6 +99,16 @@ namespace Academia.Controllers
             }
             ViewBag.id_tipoSangre = new SelectList(db.TipoSangre, "id", "nombre", estudiante.id_tipoSangre);
             return View(estudiante);
+        }
+        public JsonResult EditAjax([Bind(Include = "id,nombre,fechanacimiento,promedionotas,eshombre,id_tipoSangre,direccion,celular")] Estudiante estudiante)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(estudiante).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            ViewBag.id_tipoSangre = new SelectList(db.TipoSangre, "id", "nombre", estudiante.id_tipoSangre);
+            return Json(estudiante, JsonRequestBehavior.AllowGet);
         }
 
         // POST: Estudiantes/Edit/5
@@ -135,6 +152,15 @@ namespace Academia.Controllers
             db.Estudiante.Remove(estudiante);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public JsonResult DeleteAjax(int? id)
+        {
+            Estudiante estudiante = db.Estudiante.Find(id);
+            db.Estudiante.Remove(estudiante);
+            db.SaveChanges();
+            return Json(estudiante, JsonRequestBehavior.AllowGet);
+
         }
 
         protected override void Dispose(bool disposing)

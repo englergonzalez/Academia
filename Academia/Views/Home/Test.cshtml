@@ -19,7 +19,7 @@
             $.get("@Url.Action("NotasAcademia","Notas")", function (data) {
 
                 $(function () {
-                    $.get("@Url.Action("AsignaturasAcademia","Asignaturas")", function (asig) {
+                    $.get("@Url.Action("AsignaturasAcademia","Asignaturas")", function (asignaturas) {
 
                         Highcharts.chart('container', {
                             chart: {
@@ -34,7 +34,7 @@
                             xAxis: {
 
                                 categories:
-                                    asig,
+                                    asignaturas,
                                 crosshair: true
                             },
                             yAxis: {
